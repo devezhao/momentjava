@@ -2,6 +2,8 @@ package cn.devezhao.momentjava;
 
 import java.util.Date;
 
+import cn.devezhao.momentjava.spec.MomentCalendar;
+import cn.devezhao.momentjava.spec.MomentFormat;
 import cn.devezhao.momentjava.spec.MomentLocale;
 import cn.devezhao.momentjava.spec.MomentRelative;
 
@@ -10,7 +12,7 @@ import cn.devezhao.momentjava.spec.MomentRelative;
  * @author zhaofang123@gmail.com
  * @since 03/22/2017
  */
-public class Moment implements MomentRelative<MomentBase>, MomentLocale<MomentBase> {
+public class Moment implements MomentRelative<Moment>, MomentLocale<Moment>, MomentCalendar<Moment>, MomentFormat {
 
 	public static Moment moment() {
 		return new Moment();
@@ -26,42 +28,69 @@ public class Moment implements MomentRelative<MomentBase>, MomentLocale<MomentBa
 
 	// --
 
-	private MomentBase delegate;
+	private MomentDelegate delegate;
 
 	public Moment() {
-		this.delegate = new MomentBase();
+		this.delegate = new MomentDelegate();
 	}
 
 	public Moment(String source) {
-		this.delegate = new MomentBase(source);
+		this.delegate = new MomentDelegate(source);
 	}
 
 	public Moment(String source, String pattern) {
-		this.delegate = new MomentBase(source, pattern);
+		this.delegate = new MomentDelegate(source, pattern);
 	}
 
-	public MomentBase startOf(String unit) {
-		return this.delegate.startOf(unit);
+	public Moment startOf(String unit) {
+		delegate.startOf(unit);
+		return this;
 	}
 
-	public MomentBase endOf(String unit) {
-		return this.delegate.endOf(unit);
+	public Moment endOf(String unit) {
+		delegate.endOf(unit);
+		return this;
 	}
 
 	public String fromNow() {
-		return this.delegate.fromNow();
+		return delegate.fromNow();
 	}
 	
 	public String locale() {
-		return this.delegate.locale();
+		return delegate.locale();
 	}
 	
-	public MomentBase locale(String locale) {
-		return this.delegate.locale(locale);
+	public Moment locale(String locale) {
+		delegate.locale(locale);
+		return this;
 	}
 
 	public Date toDate() {
 		return delegate.date();
+	}
+	
+	public Moment add(int amount, String unit) {
+		delegate.add(amount, unit);
+		return this;
+	}
+	
+	public Moment subtract(int amount, String unit) {
+		delegate.subtract(amount, unit);
+		return this;
+	}
+	
+	public Moment calendar() {
+		// TODO Auto-generated method stub
+//		return delegate.calendar();
+		return null;
+	}
+	
+	public String format() {
+		return delegate.format();
+	}
+	
+	public String format(String pattern) {
+		return delegate.format(pattern);
 	}
 	
 	@Override

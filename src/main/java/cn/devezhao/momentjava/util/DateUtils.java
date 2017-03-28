@@ -1,4 +1,4 @@
-package cn.devezhao.momentjava;
+package cn.devezhao.momentjava.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

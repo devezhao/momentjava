@@ -28,4 +28,15 @@ public class MomentRelativeTest {
 		System.out.println(Moment.moment().endOf("minute").format() + " - minute");
 		System.out.println(Moment.moment().endOf("second").format() + " - second");
 	}
+	
+	@Test
+	public void testFromNow() throws Exception {
+		System.out.println(Moment.moment().fromNow());
+		System.out.println(Moment.moment().add(1, "m").fromNow());
+		System.out.println(Moment.moment().add(2, "h").fromNow());
+		System.out.println(Moment.moment().add(2, "d").fromNow());
+		System.out.println(Moment.moment().add(2, "M").fromNow());
+		System.out.println(Moment.moment().add(3, "M").fromNow());
+		System.out.println(Moment.moment().add(4, "M").fromNow());
+	}
 }

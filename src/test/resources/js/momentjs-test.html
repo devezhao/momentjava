@@ -7,7 +7,8 @@
 <link href="http://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
 <style type="text/css">
 html,body{font-size:12px}
-.table td{font-family:consolas,monaco,monospace;font-size:13px}
+.table td{font-family:consolas,monaco,monospace,"微软雅黑";font-size:13px}
+.table td h4{margin:0;font-weight:bold;}
 </style>
 </head>
 <body>
@@ -15,8 +16,8 @@ html,body{font-size:12px}
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>JS</th>
-				<th>JAVA</th>
+				<th>MomentJs</th>
+				<th>MomentJava</th>
 				<th>运行结果</th>
 			</tr>
 		</thead>
@@ -29,22 +30,33 @@ html,body{font-size:12px}
 <script src="momentjs-2.10.2.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	$('<tr><td colspan="3"><h4>Base</h4></td></tr>').appendTo('.table');
 	__exec('moment()', 'Moment.moment()');
 	__exec('moment().locale()', 'Moment.moment().locale()');
 	
+	$('<tr><td colspan="3"><h4>Relative Time</h4></td></tr>').appendTo('.table');
 	__exec('moment().startOf("year").format("YYYYMMDD hh:mm:ss a")');
 	__exec('moment().startOf("month").format("YYYYMMDD hh:mm:ss a")');
 	__exec('moment().startOf("day").format("YYYYMMDD hh:mm:ss a")');
 	__exec('moment().startOf("hour").format("YYYYMMDD hh:mm:ss a")');
 	__exec('moment().startOf("minute").format("YYYYMMDD hh:mm:ss a")');
 	__exec('moment().startOf("second").format("YYYYMMDD hh:mm:ss a")');
-	
 	__exec('moment().endOf("year").format("YYYYMMDD hh:mm:ss a")');
 	__exec('moment().endOf("month").format("YYYYMMDD hh:mm:ss a")');
 	__exec('moment().endOf("day").format("YYYYMMDD hh:mm:ss a")');
 	__exec('moment().endOf("hour").format("YYYYMMDD hh:mm:ss a")');
 	__exec('moment().endOf("minute").format("YYYYMMDD hh:mm:ss a")');
 	__exec('moment().endOf("second").format("YYYYMMDD hh:mm:ss a")');
+	__exec('moment("20170101", "YYYYMMDD").fromNow()');
+	__exec('moment().add(150, "second").fromNow()');
+	__exec('moment().add(10, "minute").fromNow()');
+	__exec('moment().add(46, "day").fromNow()');
+	__exec('moment().add(24+11, "hour").fromNow()');
+	
+	$('<tr><td colspan="3"><h4>Calendar Time</h4></td></tr>').appendTo('.table');
+	__exec('moment().add(10, "day").calendar()');
+	__exec('moment().subtract(10, "minute").format("YYYYMMDD hh:mm:ss a")');
+	__exec('moment().add(10, "day").format("YYYYMMDD hh:mm:ss a")');
 });
 var __exec = function(js, java){
 	eval('var js__r = ' + js);

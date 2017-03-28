@@ -1,17 +1,15 @@
 {
-	"RelativeTime": {
-		"future": "in %s",
-		"past": "%s ago",
-		"s": "a few seconds",
-		"m": "a minute",
-		"mm": "%d minutes",
-		"h": "an hour",
-		"hh": "%d hours",
-		"d": "a day",
-		"dd": "%d days",
-		"M": "a month",
-		"MM": "%d months",
-		"y": "a year",
-		"yy": "%d years"
-	}
+	"RelativeTime.future": "in %s",
+	"RelativeTime.past": "%s ago",
+	"RelativeTime.s": "a few seconds",
+	"RelativeTime.m": "a minute",
+	"RelativeTime.mm": "%d minutes",
+	"RelativeTime.h": "an hour",
+	"RelativeTime.hh": "%d hours",
+	"RelativeTime.d": "a day",
+	"RelativeTime.dd": "%d days",
+	"RelativeTime.M": "a month",
+	"RelativeTime.MM": "%d months",
+	"RelativeTime.y": "a year",
+	"RelativeTime.yy": "%d years"
 }
