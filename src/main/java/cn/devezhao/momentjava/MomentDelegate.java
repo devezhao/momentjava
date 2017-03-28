@@ -38,6 +38,10 @@ public class MomentDelegate implements MomentRelative<MomentDelegate>, MomentLoc
 		this.date.setTime(DateUtils.parse(source, pattern));
 	}
 	
+	protected MomentDelegate(Date date) {
+		this.date = DateUtils.calendar(date);
+	}
+	
 	// --
 	// MomentRelative
 	
@@ -187,9 +191,24 @@ public class MomentDelegate implements MomentRelative<MomentDelegate>, MomentLoc
 		return this;
 	}
 	
-	public MomentDelegate calendar() {
-		// TODO Auto-generated method stub
-		return null;
+	public String calendar() {
+		int dayLeft = DateUtils.getDayLeft(date());
+		String time = new SimpleDateFormat(" HH:mm:ss").format(this.date());
+		if (dayLeft == 0) {
+			return I18nUtils.string(this.locale(), "Calendar.today") + time;
+		} else if (dayLeft == 1) {
+			return I18nUtils.string(this.locale(), "Calendar.tomorrow") + time;
+		} else if (dayLeft == -1) {
+			return I18nUtils.string(this.locale(), "Calendar.yesterday") + time;
+		}
+		
+		if (Math.abs(dayLeft) <= 6) {
+			int wd = this.date.get(Calendar.DAY_OF_WEEK);
+			return I18nUtils.string(this.locale(), "Calendar.weekday" + wd) + time;
+		}
+		
+		String date = new SimpleDateFormat("yyyy-MM-dd").format(this.date());
+		return date;
 	}
 	
 	public Date date() {

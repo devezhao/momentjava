@@ -57,6 +57,8 @@ $(document).ready(function(){
 	__exec('moment().add(10, "day").calendar()');
 	__exec('moment().subtract(10, "minute").format("YYYYMMDD hh:mm:ss a")');
 	__exec('moment().add(10, "day").format("YYYYMMDD hh:mm:ss a")');
+	__exec('moment().calendar()');
+	__exec('moment().add(6, "hour").calendar()');
 });
 var __exec = function(js, java){
 	eval('var js__r = ' + js);

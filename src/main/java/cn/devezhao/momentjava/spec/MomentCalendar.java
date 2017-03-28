@@ -11,5 +11,5 @@ public interface MomentCalendar<T> {
 	
 	public T add(int amount, String unit);
 	
-	public T calendar();
+	public String calendar();
 }

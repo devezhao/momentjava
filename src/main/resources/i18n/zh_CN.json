@@ -11,5 +11,31 @@
 	"RelativeTime.M": "1个月",
 	"RelativeTime.MM": "%d个月",
 	"RelativeTime.y": "1年",
-	"RelativeTime.yy": "%d年"
+	"RelativeTime.yy": "%d年",
+	
+	"Calendar.weekday0": "周日",
+	"Calendar.weekday1": "周一",
+	"Calendar.weekday2": "周二",
+	"Calendar.weekday3": "周三",
+	"Calendar.weekday4": "周四",
+	"Calendar.weekday5": "周五",
+	"Calendar.weekday6": "周六",
+	"Calendar.weekday0short": "周日",
+	"Calendar.weekday1short": "周一",
+	"Calendar.weekday2short": "周二",
+	"Calendar.weekday3short": "周三",
+	"Calendar.weekday4short": "周四",
+	"Calendar.weekday5short": "周五",
+	"Calendar.weekday6short": "周六",
+	"Calendar.weekday0min": "周日",
+	"Calendar.weekday1min": "周一",
+	"Calendar.weekday2min": "周二",
+	"Calendar.weekday3min": "周三",
+	"Calendar.weekday4min": "周四",
+	"Calendar.weekday5min": "周五",
+	"Calendar.weekday6min": "周六",
+	"Calendar.today": "今天",
+	"Calendar.tomorrow": "明天",
+	"Calendar.yesterday": "昨天"
+	
 }

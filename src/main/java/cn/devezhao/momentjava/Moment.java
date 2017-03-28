@@ -19,11 +19,15 @@ public class Moment implements MomentRelative<Moment>, MomentLocale<Moment>, Mom
 	}
 
 	public static Moment moment(String source) {
-		return new Moment();
+		return new Moment(source);
 	}
-
+	
 	public static Moment moment(String source, String pattern) {
-		return new Moment();
+		return new Moment(source, pattern);
+	}
+	
+	public static Moment moment(Date date) {
+		return new Moment(date);
 	}
 
 	// --
@@ -40,6 +44,10 @@ public class Moment implements MomentRelative<Moment>, MomentLocale<Moment>, Mom
 
 	public Moment(String source, String pattern) {
 		this.delegate = new MomentDelegate(source, pattern);
+	}
+	
+	public Moment(Date date) {
+		this.delegate = new MomentDelegate(date);
 	}
 
 	public Moment startOf(String unit) {
@@ -79,10 +87,8 @@ public class Moment implements MomentRelative<Moment>, MomentLocale<Moment>, Mom
 		return this;
 	}
 	
-	public Moment calendar() {
-		// TODO Auto-generated method stub
-//		return delegate.calendar();
-		return null;
+	public String calendar() {
+		return delegate.calendar();
 	}
 	
 	public String format() {
