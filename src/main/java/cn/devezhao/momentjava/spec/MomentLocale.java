@@ -7,7 +7,14 @@ package cn.devezhao.momentjava.spec;
  */
 public interface MomentLocale<T> {
 
+	/**
+	 * @return
+	 */
 	public String locale();
 	
+	/**
+	 * @param locale
+	 * @return
+	 */
 	public T locale(String locale);
 }

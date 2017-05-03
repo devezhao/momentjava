@@ -11,22 +11,23 @@ public class MomentRelativeTest {
 
 	@Test
 	public void testStartOf() throws Exception {
-		System.out.println(Moment.moment().startOf("year").format() + " - year");
-		System.out.println(Moment.moment().startOf("month").format() + " - month");
-		System.out.println(Moment.moment().startOf("day").format() + " - day");
-		System.out.println(Moment.moment().startOf("hour").format() + " - hour");
-		System.out.println(Moment.moment().startOf("minute").format() + " - minute");
-		System.out.println(Moment.moment().startOf("second").format() + " - second");
+		System.out.println(Moment.moment().startOf(Moment.UNIT_YEAR).format() + " - year");
+		System.out.println(Moment.moment().startOf(Moment.UNIT_MONTH).format() + " - month");
+		System.out.println(Moment.moment().startOf(Moment.UNIT_DAY).format() + " - day");
+		System.out.println(Moment.moment().startOf(Moment.UNIT_HOUR).format() + " - hour");
+		System.out.println(Moment.moment().startOf(Moment.UNIT_MINUTE).format() + " - minute");
+		System.out.println(Moment.moment().startOf(Moment.UNIT_SECOND).format() + " - second");
+		System.out.println(Moment.moment().startOf(Moment.UNIT_MILLISECOND).format() + " - millisecond");
 	}
 	
 	@Test
 	public void testEndOf() throws Exception {
-		System.out.println(Moment.moment().endOf("year").format() + " - year");
-		System.out.println(Moment.moment().endOf("month").format() + " - month");
-		System.out.println(Moment.moment().endOf("day").format() + " - day");
-		System.out.println(Moment.moment().endOf("hour").format() + " - hour");
-		System.out.println(Moment.moment().endOf("minute").format() + " - minute");
-		System.out.println(Moment.moment().endOf("second").format() + " - second");
+		System.out.println(Moment.moment().endOf(Moment.UNIT_YEAR_SHORT).format() + " - year");
+		System.out.println(Moment.moment().endOf(Moment.UNIT_MONTH_SHORT).format() + " - month");
+		System.out.println(Moment.moment().endOf(Moment.UNIT_DAY_SHORT).format() + " - day");
+		System.out.println(Moment.moment().endOf(Moment.UNIT_HOUR_SHORT).format() + " - hour");
+		System.out.println(Moment.moment().endOf(Moment.UNIT_MINUTE_SHORT).format() + " - minute");
+		System.out.println(Moment.moment().endOf(Moment.UNIT_SECOND_SHORT).format() + " - second");
 	}
 	
 	@Test

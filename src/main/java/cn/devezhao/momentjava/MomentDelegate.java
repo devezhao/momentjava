@@ -4,9 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
+import cn.devezhao.momentjava.spec.MomentBase;
 import cn.devezhao.momentjava.spec.MomentCalendar;
 import cn.devezhao.momentjava.spec.MomentFormat;
 import cn.devezhao.momentjava.spec.MomentLocale;
@@ -19,91 +19,112 @@ import cn.devezhao.momentjava.util.I18nUtils;
  * @author zhaofang123@gmail.com
  * @since 03/22/2017
  */
-public class MomentDelegate implements MomentRelative<MomentDelegate>, MomentLocale<MomentDelegate>, MomentFormat, MomentCalendar<MomentDelegate> {
+public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelative<MomentDelegate>, MomentLocale<MomentDelegate>, MomentFormat, MomentCalendar<MomentDelegate> {
 
-	private Calendar date;
-	private String locale = Locale.getDefault().toString();
+	private static String defaultLocale = "zh_CN";
+	private static String defaultFormat = "yyyy-MM-dd HH:mm:ss";
+	
+	private Calendar dateRaw;
+	private String locale = defaultLocale;
+	private String format = defaultFormat;
 	
 	protected MomentDelegate() {
-		this.date = Calendar.getInstance();
+		this.dateRaw = Calendar.getInstance();
 	}
 	
 	protected MomentDelegate(String source) {
 		this();
-		this.date.setTime(DateUtils.parse(source));
+		this.dateRaw.setTime(DateUtils.parse(source));
 	}
 	
 	protected MomentDelegate(String source, String pattern) {
 		this();
-		this.date.setTime(DateUtils.parse(source, pattern));
+		this.dateRaw.setTime(DateUtils.parse(source, pattern));
 	}
 	
 	protected MomentDelegate(Date date) {
-		this.date = DateUtils.calendar(date);
+		this.dateRaw = DateUtils.calendar(date);
+	}
+	
+	/**
+	 * @param locale
+	 * @param format
+	 */
+	protected static void config(String locale, String format) {
+		defaultLocale = locale;
+		defaultFormat = format;
 	}
 	
 	// --
 	// MomentRelative
 	
-	static final Map<String, Integer> UNIT_INT = new HashMap<String, Integer>();
+	private static final Map<String, Integer> UNIT2INT_MAP = new HashMap<String, Integer>();
 	static {
-		UNIT_INT.put("year", 		1);
-		UNIT_INT.put("month", 		2);
-		UNIT_INT.put("day", 		3);
-		UNIT_INT.put("hour", 		4);
-		UNIT_INT.put("minute", 		5);
-		UNIT_INT.put("second", 		6);
+		UNIT2INT_MAP.put(UNIT_YEAR, 1);
+		UNIT2INT_MAP.put(UNIT_MONTH, 2);
+		UNIT2INT_MAP.put(UNIT_DAY, 3);
+		UNIT2INT_MAP.put(UNIT_HOUR, 4);
+		UNIT2INT_MAP.put(UNIT_MINUTE, 5);
+		UNIT2INT_MAP.put(UNIT_SECOND, 6);
+		UNIT2INT_MAP.put(UNIT_MILLISECOND, 7);
 	}
 
 	public MomentDelegate startOf(String unit) {
-		int unitInt = UNIT_INT.get(unit);
-		this.date.set(Calendar.MILLISECOND, 0);
+		if (!UNIT2INT_MAP.containsKey(unit)) {
+			throw new IllegalArgumentException("无效的时间单位: " + unit);
+		}
+		int unitInt = UNIT2INT_MAP.get(unit);
+		this.dateRaw.set(Calendar.MILLISECOND, 0);
 		if (unitInt < 6) {
-			this.date.set(Calendar.SECOND, 0);
+			this.dateRaw.set(Calendar.SECOND, 0);
 		}
 		if (unitInt < 5) {
-			this.date.set(Calendar.MINUTE, 0);
+			this.dateRaw.set(Calendar.MINUTE, 0);
 		}
 		if (unitInt < 4) {
-			this.date.set(Calendar.HOUR_OF_DAY, 0);
+			this.dateRaw.set(Calendar.HOUR_OF_DAY, 0);
 		}
 		if (unitInt < 3) {
-			this.date.set(Calendar.DAY_OF_MONTH, 1);
+			this.dateRaw.set(Calendar.DAY_OF_MONTH, 1);
 		}
 		if (unitInt < 2) {
-			this.date.set(Calendar.MONTH, 0);
+			this.dateRaw.set(Calendar.MONTH, 0);
 		}
 		return this;
 	}
 
 	public MomentDelegate endOf(String unit) {
-		int unitInt = UNIT_INT.get(unit);
-		this.date.set(Calendar.MILLISECOND, 999);
+		if (!UNIT2INT_MAP.containsKey(unit)) {
+			throw new IllegalArgumentException("无效的时间单位: " + unit);
+		}
+		int unitInt = UNIT2INT_MAP.get(unit);
+		this.dateRaw.set(Calendar.MILLISECOND, 999);
 		if (unitInt < 6) {
-			this.date.set(Calendar.SECOND, 59);
+			this.dateRaw.set(Calendar.SECOND, 59);
 		}
 		if (unitInt < 5) {
-			this.date.set(Calendar.MINUTE, 59);
+			this.dateRaw.set(Calendar.MINUTE, 59);
 		}
 		if (unitInt < 4) {
-			this.date.set(Calendar.HOUR_OF_DAY, 23);
+			this.dateRaw.set(Calendar.HOUR_OF_DAY, 23);
 		}
 		if (unitInt < 3) {
-			this.date.set(Calendar.DAY_OF_MONTH, 1);
-			this.date.add(Calendar.MONTH, 1);
-			this.date.add(Calendar.DAY_OF_MONTH, -1);
+			this.dateRaw.set(Calendar.DAY_OF_MONTH, 1);
+			this.dateRaw.add(Calendar.MONTH, 1);
+			this.dateRaw.add(Calendar.DAY_OF_MONTH, -1);
 		}
 		if (unitInt < 2) {
-			this.date.set(Calendar.MONTH, 11);
+			this.dateRaw.set(Calendar.MONTH, 11);
 		}
 		return this;
 	}
 
 	// TODO 优化 月、年 的计算
 	public String fromNow() {
-		long nowLeft = Calendar.getInstance().getTimeInMillis() - this.date.getTimeInMillis();
+		long nowLeft = Calendar.getInstance().getTimeInMillis() - this.dateRaw.getTimeInMillis();
 		
-		String inago = nowLeft < 0 ? I18nUtils.string(this.locale(),"RelativeTime.past")
+		String inago = nowLeft < 0 
+				? I18nUtils.string(this.locale(),"RelativeTime.past")
 				: I18nUtils.string(this.locale(),"RelativeTime.future");
 		
 		nowLeft = Math.abs(nowLeft);
@@ -150,6 +171,9 @@ public class MomentDelegate implements MomentRelative<MomentDelegate>, MomentLoc
 		}
 	}
 	
+	// --
+	// MomentLocale
+	
 	public String locale() {
 		return this.locale;
 	}
@@ -159,34 +183,44 @@ public class MomentDelegate implements MomentRelative<MomentDelegate>, MomentLoc
 		return this;
 	}
 	
+	// --
+	// MomentFormat
+	
 	public String format() {
-		return new SimpleDateFormat("yyyyMMdd HH:mm:ss SSS").format(date());
+		return format(this.format);
 	}
 	
 	public String format(String pattern) {
-		// TODO Auto-generated method stub
-		return format();
+		return new SimpleDateFormat(pattern).format(date());
 	}
+	
+	// --
+	// MomentCalendar
 	
 	public MomentDelegate subtract(int amount, String unit) {
 		return add(-amount, unit);
 	}
 	
 	public MomentDelegate add(int amount, String unit) {
-		if ("years".equals(unit) || "y".equals(unit)) {
-			this.date.add(Calendar.YEAR, -amount);
-		} else if ("months".equals(unit) || "M".equals(unit)) {
-			this.date.add(Calendar.MONTH, -amount);
-		} else if ("days".equals(unit) || "d".equals(unit)) {
-			this.date.add(Calendar.DAY_OF_MONTH, -amount);
-		} else if ("hours".equals(unit) || "h".equals(unit)) {
-			this.date.add(Calendar.HOUR_OF_DAY, -amount);
-		} else if ("minutes".equals(unit) || "m".equals(unit)) {
-			this.date.add(Calendar.MINUTE, -amount);
-		} else if ("seconds".equals(unit) || "s".equals(unit)) {
-			this.date.add(Calendar.SECOND, -amount);
-		} else if ("milliseconds".equals(unit) || "ms".equals(unit)) {
-			this.date.add(Calendar.MILLISECOND, -amount);
+		if (unit.endsWith("s")) {
+			unit = unit.substring(0, unit.length() - 2);
+		}
+		if (UNIT_YEAR.equals(unit) || UNIT_YEAR_SHORT.equals(unit)) {
+			this.dateRaw.add(Calendar.YEAR, amount);
+		} else if (UNIT_MONTH.equals(unit) || UNIT_MONTH_SHORT.equals(unit)) {
+			this.dateRaw.add(Calendar.MONTH, amount);
+		} else if (UNIT_DAY.equals(unit) || UNIT_DAY_SHORT.equals(unit)) {
+			this.dateRaw.add(Calendar.DAY_OF_MONTH, amount);
+		} else if (UNIT_HOUR.equals(unit) || UNIT_HOUR_SHORT.equals(unit)) {
+			this.dateRaw.add(Calendar.HOUR_OF_DAY, amount);
+		} else if (UNIT_MINUTE.equals(unit) || UNIT_MINUTE_SHORT.equals(unit)) {
+			this.dateRaw.add(Calendar.MINUTE, amount);
+		} else if (UNIT_SECOND.equals(unit) || UNIT_SECOND_SHORT.equals(unit)) {
+			this.dateRaw.add(Calendar.SECOND, amount);
+		} else if (UNIT_MILLISECOND.equals(unit) || UNIT_MILLISECOND_SHORT.equals(unit)) {
+			this.dateRaw.add(Calendar.MILLISECOND, amount);
+		} else {
+			throw new IllegalArgumentException("无效的时间单位: " + unit);
 		}
 		return this;
 	}
@@ -202,21 +236,25 @@ public class MomentDelegate implements MomentRelative<MomentDelegate>, MomentLoc
 			return I18nUtils.string(this.locale(), "Calendar.yesterday") + time;
 		}
 		
-		if (Math.abs(dayLeft) <= 6) {
-			int wd = this.date.get(Calendar.DAY_OF_WEEK);
-			return I18nUtils.string(this.locale(), "Calendar.weekday" + wd) + time;
-		}
+		// TODO 优化周X显示
+//		if (Math.abs(dayLeft) <= 6) {
+//			int wd = this.dateRaw.get(Calendar.DAY_OF_WEEK) - 1;
+//			if (wd < 0) {
+//				wd = 0;
+//			}
+//			return I18nUtils.string(this.locale(), "Calendar.weekday" + wd) + time;
+//		}
 		
-		String date = new SimpleDateFormat("yyyy-MM-dd").format(this.date());
+		String date = new SimpleDateFormat(this.format).format(this.date());
 		return date;
 	}
 	
 	public Date date() {
-		return date.getTime();
+		return dateRaw.getTime();
 	}
 	
 	@Override
 	public String toString() {
-		return String.valueOf(this.date.getTime());
+		return String.valueOf(this.dateRaw.getTime());
 	}
 }

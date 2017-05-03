@@ -11,5 +11,23 @@
 	"RelativeTime.M": "a month",
 	"RelativeTime.MM": "%d months",
 	"RelativeTime.y": "a year",
-	"RelativeTime.yy": "%d years"
+	"RelativeTime.yy": "%d years",
+	
+	"Calendar.weekday0": "Sunday",
+	"Calendar.weekday1": "Monday",
+	"Calendar.weekday2": "Tuesday",
+	"Calendar.weekday3": "Wednesday",
+	"Calendar.weekday4": "Thursday",
+	"Calendar.weekday5": "Friday",
+	"Calendar.weekday6": "Saturday",
+	"Calendar.weekday0short": "Sun",
+	"Calendar.weekday1short": "Mon",
+	"Calendar.weekday2short": "Tue",
+	"Calendar.weekday3short": "Wed",
+	"Calendar.weekday4short": "Thur",
+	"Calendar.weekday5short": "Fri",
+	"Calendar.weekday6short": "Sat",
+	"Calendar.today": "Today",
+	"Calendar.tomorrow": "Tomorrow",
+	"Calendar.yesterday": "Yesterday"
 }

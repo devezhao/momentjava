@@ -2,6 +2,7 @@ package cn.devezhao.momentjava;
 
 import java.util.Date;
 
+import cn.devezhao.momentjava.spec.MomentBase;
 import cn.devezhao.momentjava.spec.MomentCalendar;
 import cn.devezhao.momentjava.spec.MomentFormat;
 import cn.devezhao.momentjava.spec.MomentLocale;
@@ -12,22 +13,35 @@ import cn.devezhao.momentjava.spec.MomentRelative;
  * @author zhaofang123@gmail.com
  * @since 03/22/2017
  */
-public class Moment implements MomentRelative<Moment>, MomentLocale<Moment>, MomentCalendar<Moment>, MomentFormat {
-
+public class Moment implements MomentBase<Moment>, MomentRelative<Moment>, MomentLocale<Moment>, MomentCalendar<Moment>, MomentFormat {
+	
 	public static Moment moment() {
 		return new Moment();
+	}
+
+	public static Moment moment(Date date) {
+		return new Moment(date);
 	}
 
 	public static Moment moment(String source) {
 		return new Moment(source);
 	}
 	
+	/**
+	 * @param source
+	 * @param pattern JAVA pattern
+	 * @return
+	 */
 	public static Moment moment(String source, String pattern) {
 		return new Moment(source, pattern);
 	}
 	
-	public static Moment moment(Date date) {
-		return new Moment(date);
+	/**
+	 * @param locale
+	 * @param format
+	 */
+	public static void config(String locale, String format) {
+		MomentDelegate.config(locale, format);
 	}
 
 	// --
@@ -38,16 +52,16 @@ public class Moment implements MomentRelative<Moment>, MomentLocale<Moment>, Mom
 		this.delegate = new MomentDelegate();
 	}
 
+	public Moment(Date date) {
+		this.delegate = new MomentDelegate(date);
+	}
+
 	public Moment(String source) {
 		this.delegate = new MomentDelegate(source);
 	}
 
 	public Moment(String source, String pattern) {
 		this.delegate = new MomentDelegate(source, pattern);
-	}
-	
-	public Moment(Date date) {
-		this.delegate = new MomentDelegate(date);
 	}
 
 	public Moment startOf(String unit) {
@@ -73,10 +87,6 @@ public class Moment implements MomentRelative<Moment>, MomentLocale<Moment>, Mom
 		return this;
 	}
 
-	public Date toDate() {
-		return delegate.date();
-	}
-	
 	public Moment add(int amount, String unit) {
 		delegate.add(amount, unit);
 		return this;
@@ -97,6 +107,10 @@ public class Moment implements MomentRelative<Moment>, MomentLocale<Moment>, Mom
 	
 	public String format(String pattern) {
 		return delegate.format(pattern);
+	}
+	
+	public Date date() {
+		return delegate.date();
 	}
 	
 	@Override
