@@ -145,7 +145,8 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 		
 		nowLeft /= 60;  // 分
 		if (nowLeft < 45) {
-			return String.format(inago, I18nUtils.string(this.locale(), nowLeft + "RelativeTime.mm"));
+			String time = String.format(I18nUtils.string(this.locale(), "RelativeTime.mm"), nowLeft);
+			return String.format(inago, time);
 		} else if (nowLeft < 90) {
 			return String.format(inago, I18nUtils.string(this.locale(), "RelativeTime.h"));
 		} else if (nowLeft <= 60 * 21) {
