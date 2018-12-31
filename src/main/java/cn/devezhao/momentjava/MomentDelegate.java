@@ -61,12 +61,19 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 	private static final Map<String, Integer> UNIT2INT_MAP = new HashMap<String, Integer>();
 	static {
 		UNIT2INT_MAP.put(UNIT_YEAR, 1);
+		UNIT2INT_MAP.put(UNIT_YEAR_SHORT, 1);
 		UNIT2INT_MAP.put(UNIT_MONTH, 2);
+		UNIT2INT_MAP.put(UNIT_MONTH_SHORT, 2);
 		UNIT2INT_MAP.put(UNIT_DAY, 3);
+		UNIT2INT_MAP.put(UNIT_DAY_SHORT, 3);
 		UNIT2INT_MAP.put(UNIT_HOUR, 4);
+		UNIT2INT_MAP.put(UNIT_HOUR_SHORT, 4);
 		UNIT2INT_MAP.put(UNIT_MINUTE, 5);
+		UNIT2INT_MAP.put(UNIT_MINUTE_SHORT, 5);
 		UNIT2INT_MAP.put(UNIT_SECOND, 6);
+		UNIT2INT_MAP.put(UNIT_SECOND_SHORT, 6);
 		UNIT2INT_MAP.put(UNIT_MILLISECOND, 7);
+		UNIT2INT_MAP.put(UNIT_MILLISECOND_SHORT, 7);
 	}
 
 	public MomentDelegate startOf(String unit) {
@@ -121,7 +128,7 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 
 	// TODO 优化 月、年 的计算
 	public String fromNow() {
-		long nowLeft = Calendar.getInstance().getTimeInMillis() - this.dateRaw.getTimeInMillis();
+		long nowLeft = this.dateRaw.getTimeInMillis() - Calendar.getInstance().getTimeInMillis();
 		
 		String inago = nowLeft < 0 
 				? I18nUtils.string(this.locale(),"RelativeTime.past")
@@ -138,7 +145,8 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 		
 		nowLeft /= 60;  // 分
 		if (nowLeft < 45) {
-			return String.format(inago, I18nUtils.string(this.locale(), nowLeft + "RelativeTime.mm"));
+			String time = String.format(I18nUtils.string(this.locale(), "RelativeTime.mm"), nowLeft);
+			return String.format(inago, time);
 		} else if (nowLeft < 90) {
 			return String.format(inago, I18nUtils.string(this.locale(), "RelativeTime.h"));
 		} else if (nowLeft <= 60 * 21) {

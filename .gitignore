@@ -72,3 +72,5 @@ Temporary Items
 /.settings/
 /TESTDB/
 derby.log
+.classpath
+.project
