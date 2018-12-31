@@ -1,5 +1,6 @@
 package cn.devezhao.momentjava.util;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,7 +43,7 @@ public class DateUtils {
 				return new SimpleDateFormat("yyMMdd").parse(source);
 			} else if (source.length() == 8) {
 				return new SimpleDateFormat("yyyyMMdd").parse(source);
-			} else if (source.length() == 8) {
+			} else if (source.length() == 10) {
 				return new SimpleDateFormat("yyyy-MM-dd").parse(source);
 			} else if (source.length() == 19) {
 				return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(source);
@@ -102,30 +103,32 @@ public class DateUtils {
 	 * @return
 	 */
 	public static int getDayLeft(Date begin, Date end) {
-		begin = startTime(begin);
-		end = startTime(end);
-		int ct = begin.compareTo(end);
-		if (ct == 0) {
-			return 0;
-		}
+//		begin = startTime(begin);
+//		end = startTime(end);
+//		int ct = begin.compareTo(end);
+//		if (ct == 0) {
+//			return 0;
+//		}
+//		
+//		if (ct < 0) {
+//			Calendar cal = calendar(begin);
+//			int days = -1;
+//			while (cal.getTime().compareTo(end) <= 0) {
+//				days++;
+//				cal.add(Calendar.DAY_OF_YEAR, 1);
+//			}
+//			return days;
+//		} else {
+//			Calendar cal = calendar(end);
+//			int days = -1;
+//			while (cal.getTime().compareTo(begin) <= 0) {
+//				days++;
+//				cal.add(Calendar.DAY_OF_YEAR, 1);
+//			}
+//			return -days;
+//		}
 		
-		if (ct < 0) {
-			Calendar cal = calendar(begin);
-			int days = -1;
-			while (cal.getTime().compareTo(end) <= 0) {
-				days++;
-				cal.add(Calendar.DAY_OF_YEAR, 1);
-			}
-			return days;
-		} else {
-			Calendar cal = calendar(end);
-			int days = -1;
-			while (cal.getTime().compareTo(begin) <= 0) {
-				days++;
-				cal.add(Calendar.DAY_OF_YEAR, 1);
-			}
-			return -days;
-		}
+		return (int) subtract(end, begin, Calendar.DAY_OF_YEAR);
 	}
 	
 	/**
@@ -186,5 +189,62 @@ public class DateUtils {
 		cal.set(Calendar.SECOND, 59);
 		cal.set(Calendar.MILLISECOND, 999);
 		return cal.getTime();
+	}
+	
+	/**
+	 * 两个日期的相差值 <code>subtrahend - minuend
+	 * 
+	 * @param subtrahend
+	 * @param minuend
+	 * @param field
+	 * @return
+	 */
+	public static long subtract(Date subtrahend, Date minuend, int field) {
+		BigDecimal smLeft = BigDecimal.valueOf(subtrahend.getTime())
+				.subtract(BigDecimal.valueOf(minuend.getTime()));
+		
+		// 毫秒
+		if (field == Calendar.MILLISECOND) {
+			return smLeft.longValue();
+		}
+		// 秒
+		if (field == Calendar.SECOND) {
+			return subtractFormat(smLeft, 1000);
+		}
+		// 分
+		if (field == Calendar.MINUTE) {
+			return subtractFormat(smLeft, 1000 * 60);
+		}
+		// 时
+		if (field == Calendar.HOUR || field == Calendar.HOUR_OF_DAY) {
+			return subtractFormat(smLeft, 1000 * 60 * 60);
+		}
+		// 天
+		if (field == Calendar.DAY_OF_YEAR || field == Calendar.DAY_OF_MONTH) {
+			return subtractFormat(smLeft,  1000 * 60 * 60 * 24);
+		}
+		
+		Calendar c1 = Calendar.getInstance(),
+				 c2 = Calendar.getInstance();
+		c1.setTime(subtrahend);
+		c2.setTime(minuend);
+		long yearLeft = c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR);
+		// 月
+		if (field == Calendar.MONTH) {
+			long monthLeft = c1.get(Calendar.MONTH) - c2.get(Calendar.MONTH);
+			monthLeft += (yearLeft * 12);
+			return monthLeft;
+		}
+		// 年
+		if (field == Calendar.YEAR) {
+			return yearLeft;
+		}
+		
+		throw new UnsupportedOperationException("field: " + field);
+	}
+	
+	private static long subtractFormat(BigDecimal x, long divisor) {
+		x = x.divide(BigDecimal.valueOf(divisor));
+		return x.setScale(0, BigDecimal.ROUND_UP).longValue();
 	}
 }
