@@ -17,7 +17,6 @@ import com.alibaba.fastjson.JSONObject;
  * @author zhaofang123@gmail.com
  * @since 03/23/2017
  */
-@SuppressWarnings("ALL")
 public class I18nUtils {
 	
 	/**
