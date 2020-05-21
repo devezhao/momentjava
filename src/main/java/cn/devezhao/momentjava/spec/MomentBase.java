@@ -9,23 +9,22 @@ import java.util.Date;
  */
 public interface MomentBase<T> {
 	
-	public static final String UNIT_YEAR = "year";
-	public static final String UNIT_MONTH = "month";
-	public static final String UNIT_DAY = "day";
-	public static final String UNIT_HOUR = "hour";
-	public static final String UNIT_MINUTE = "minute";
-	public static final String UNIT_SECOND = "second";
-	public static final String UNIT_MILLISECOND = "millisecond";
+	String UNIT_YEAR = "year";
+	String UNIT_MONTH = "month";
+	String UNIT_DAY = "day";
+	String UNIT_HOUR = "hour";
+	String UNIT_MINUTE = "minute";
+	String UNIT_SECOND = "second";
+	String UNIT_MILLISECOND = "millisecond";
 	
-	public static final String UNIT_YEAR_SHORT = "y";
-	public static final String UNIT_MONTH_SHORT = "M";
-	public static final String UNIT_DAY_SHORT = "d";
-	public static final String UNIT_HOUR_SHORT = "h";
-	public static final String UNIT_MINUTE_SHORT = "m";
-	public static final String UNIT_SECOND_SHORT = "s";
-	public static final String UNIT_MILLISECOND_SHORT = "ms";
-	
-	
+	String UNIT_YEAR_SHORT = "y";
+	String UNIT_MONTH_SHORT = "M";
+	String UNIT_DAY_SHORT = "d";
+	String UNIT_HOUR_SHORT = "h";
+	String UNIT_MINUTE_SHORT = "m";
+	String UNIT_SECOND_SHORT = "s";
+	String UNIT_MILLISECOND_SHORT = "ms";
+
 	/**
 	 * @return
 	 */

@@ -10,11 +10,11 @@ public interface MomentFormat {
 	/**
 	 * @return
 	 */
-	public String format();
+    String format();
 	
 	/**
 	 * @param pattern
 	 * @return
 	 */
-	public String format(String pattern);
+    String format(String pattern);
 }

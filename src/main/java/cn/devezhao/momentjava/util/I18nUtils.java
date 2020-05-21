@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import com.alibaba.fastjson.JSONObject;
  * @author zhaofang123@gmail.com
  * @since 03/23/2017
  */
+@SuppressWarnings("ALL")
 public class I18nUtils {
 	
 	/**
@@ -28,7 +30,7 @@ public class I18nUtils {
 		return res.getString(key);
 	}
 	
-	private static final Map<String, JSONObject> RESCACHED = new HashMap<String, JSONObject>();
+	private static final Map<String, JSONObject> RESCACHED = new HashMap<>();
 	/**
 	 * @param locale
 	 * @return
@@ -41,16 +43,16 @@ public class I18nUtils {
 		InputStream is = null;
 		InputStreamReader isr = null;
 		BufferedReader br = null;
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		try {
 			is = I18nUtils.class.getClassLoader().getResourceAsStream("i18n/" + locale + ".json");
 			if (is == null) {
 				throw new FileNotFoundException();
 			}
-			isr = new InputStreamReader(is, "utf-8");
+			isr = new InputStreamReader(is, StandardCharsets.UTF_8);
 			br = new BufferedReader(isr);
 			
-			String l = null;
+			String l;
 			while ((l = br.readLine()) != null) {
 				sb.append(l);
 			}
@@ -61,13 +63,19 @@ public class I18nUtils {
 		} finally {
 			try {
 				if (br != null) br.close();
-			} catch (IOException e) { }
+			} catch (IOException e) {
+			    // NOOP
+            }
 			try {
 				if (isr != null) isr.close();
-			} catch (IOException e) { }
+			} catch (IOException e) {
+			    // NOOP
+            }
 			try {
 				if (is != null) is.close();
-			} catch (IOException e) { }
+			} catch (IOException e) {
+			    // NOOP
+            }
 		}
 		
 		JSONObject res = JSON.parseObject(sb.toString());

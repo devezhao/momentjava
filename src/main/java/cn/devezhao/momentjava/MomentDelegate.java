@@ -58,7 +58,7 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 	// --
 	// MomentRelative
 	
-	private static final Map<String, Integer> UNIT2INT_MAP = new HashMap<String, Integer>();
+	private static final Map<String, Integer> UNIT2INT_MAP = new HashMap<>();
 	static {
 		UNIT2INT_MAP.put(UNIT_YEAR, 1);
 		UNIT2INT_MAP.put(UNIT_YEAR_SHORT, 1);
@@ -76,7 +76,8 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 		UNIT2INT_MAP.put(UNIT_MILLISECOND_SHORT, 7);
 	}
 
-	public MomentDelegate startOf(String unit) {
+	@Override
+    public MomentDelegate startOf(String unit) {
 		if (!UNIT2INT_MAP.containsKey(unit)) {
 			throw new IllegalArgumentException("无效的时间单位: " + unit);
 		}
@@ -100,7 +101,8 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 		return this;
 	}
 
-	public MomentDelegate endOf(String unit) {
+	@Override
+    public MomentDelegate endOf(String unit) {
 		if (!UNIT2INT_MAP.containsKey(unit)) {
 			throw new IllegalArgumentException("无效的时间单位: " + unit);
 		}
@@ -127,7 +129,9 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 	}
 
 	// TODO 优化 月、年 的计算
-	public String fromNow() {
+
+	@Override
+    public String fromNow() {
 		long nowLeft = this.dateRaw.getTimeInMillis() - Calendar.getInstance().getTimeInMillis();
 		
 		String inago = nowLeft < 0 
@@ -182,11 +186,13 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 	// --
 	// MomentLocale
 	
-	public String locale() {
+	@Override
+    public String locale() {
 		return this.locale;
 	}
 	
-	public MomentDelegate locale(String locale) {
+	@Override
+    public MomentDelegate locale(String locale) {
 		this.locale = locale;
 		return this;
 	}
@@ -194,46 +200,67 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 	// --
 	// MomentFormat
 	
-	public String format() {
+	@Override
+    public String format() {
 		return format(this.format);
 	}
 	
-	public String format(String pattern) {
+	@Override
+    public String format(String pattern) {
 		return new SimpleDateFormat(pattern).format(date());
 	}
 	
 	// --
 	// MomentCalendar
 	
-	public MomentDelegate subtract(int amount, String unit) {
+	@Override
+    public MomentDelegate subtract(int amount, String unit) {
 		return add(-amount, unit);
 	}
 	
-	public MomentDelegate add(int amount, String unit) {
+	@Override
+    public MomentDelegate add(int amount, String unit) {
 		if (unit.endsWith("s")) {
 			unit = unit.substring(0, unit.length() - 2);
 		}
-		if (UNIT_YEAR.equals(unit) || UNIT_YEAR_SHORT.equals(unit)) {
-			this.dateRaw.add(Calendar.YEAR, amount);
-		} else if (UNIT_MONTH.equals(unit) || UNIT_MONTH_SHORT.equals(unit)) {
-			this.dateRaw.add(Calendar.MONTH, amount);
-		} else if (UNIT_DAY.equals(unit) || UNIT_DAY_SHORT.equals(unit)) {
-			this.dateRaw.add(Calendar.DAY_OF_MONTH, amount);
-		} else if (UNIT_HOUR.equals(unit) || UNIT_HOUR_SHORT.equals(unit)) {
-			this.dateRaw.add(Calendar.HOUR_OF_DAY, amount);
-		} else if (UNIT_MINUTE.equals(unit) || UNIT_MINUTE_SHORT.equals(unit)) {
-			this.dateRaw.add(Calendar.MINUTE, amount);
-		} else if (UNIT_SECOND.equals(unit) || UNIT_SECOND_SHORT.equals(unit)) {
-			this.dateRaw.add(Calendar.SECOND, amount);
-		} else if (UNIT_MILLISECOND.equals(unit) || UNIT_MILLISECOND_SHORT.equals(unit)) {
-			this.dateRaw.add(Calendar.MILLISECOND, amount);
-		} else {
-			throw new IllegalArgumentException("无效的时间单位: " + unit);
-		}
+
+        switch (unit) {
+            case UNIT_YEAR:
+            case UNIT_YEAR_SHORT:
+                this.dateRaw.add(Calendar.YEAR, amount);
+                break;
+            case UNIT_MONTH:
+            case UNIT_MONTH_SHORT:
+                this.dateRaw.add(Calendar.MONTH, amount);
+                break;
+            case UNIT_DAY:
+            case UNIT_DAY_SHORT:
+                this.dateRaw.add(Calendar.DAY_OF_MONTH, amount);
+                break;
+            case UNIT_HOUR:
+            case UNIT_HOUR_SHORT:
+                this.dateRaw.add(Calendar.HOUR_OF_DAY, amount);
+                break;
+            case UNIT_MINUTE:
+            case UNIT_MINUTE_SHORT:
+                this.dateRaw.add(Calendar.MINUTE, amount);
+                break;
+            case UNIT_SECOND:
+            case UNIT_SECOND_SHORT:
+                this.dateRaw.add(Calendar.SECOND, amount);
+                break;
+            case UNIT_MILLISECOND:
+            case UNIT_MILLISECOND_SHORT:
+                this.dateRaw.add(Calendar.MILLISECOND, amount);
+                break;
+            default:
+                throw new IllegalArgumentException("无效的时间单位: " + unit);
+        }
 		return this;
 	}
 	
-	public String calendar() {
+	@Override
+    public String calendar() {
 		int dayLeft = DateUtils.getDayLeft(date());
 		String time = new SimpleDateFormat(" HH:mm:ss").format(this.date());
 		if (dayLeft == 0) {
@@ -252,12 +279,12 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 //			}
 //			return I18nUtils.string(this.locale(), "Calendar.weekday" + wd) + time;
 //		}
-		
-		String date = new SimpleDateFormat(this.format).format(this.date());
-		return date;
+
+        return new SimpleDateFormat(this.format).format(this.date());
 	}
 	
-	public Date date() {
+	@Override
+    public Date date() {
 		return dateRaw.getTime();
 	}
 	

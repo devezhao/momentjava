@@ -12,17 +12,17 @@ public interface MomentCalendar<T> {
 	 * @param unit
 	 * @return
 	 */
-	public T subtract(int amount, String unit);
+    T subtract(int amount, String unit);
 	
 	/**
 	 * @param amount
 	 * @param unit
 	 * @return
 	 */
-	public T add(int amount, String unit);
+    T add(int amount, String unit);
 	
 	/**
 	 * @return
 	 */
-	public String calendar();
+    String calendar();
 }

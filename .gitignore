@@ -74,3 +74,4 @@ Temporary Items
 derby.log
 .classpath
 .project
+*.iml

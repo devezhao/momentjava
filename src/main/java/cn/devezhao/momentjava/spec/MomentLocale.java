@@ -10,11 +10,11 @@ public interface MomentLocale<T> {
 	/**
 	 * @return
 	 */
-	public String locale();
+    String locale();
 	
 	/**
 	 * @param locale
 	 * @return
 	 */
-	public T locale(String locale);
+    T locale(String locale);
 }

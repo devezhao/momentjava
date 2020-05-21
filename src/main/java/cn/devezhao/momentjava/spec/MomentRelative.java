@@ -11,16 +11,16 @@ public interface MomentRelative<T> {
 	 * @param unit
 	 * @return
 	 */
-	public T startOf(String unit);
+    T startOf(String unit);
 	
 	/**
 	 * @param unit
 	 * @return
 	 */
-	public T endOf(String unit);
+    T endOf(String unit);
 	
 	/**
 	 * @return
 	 */
-	public String fromNow();
+    String fromNow();
 }

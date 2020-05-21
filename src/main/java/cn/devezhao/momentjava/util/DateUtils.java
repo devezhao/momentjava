@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class DateUtils {
 	
-	private static final Map<String, String> JS2JAVA = new HashMap<String, String>();
+	private static final Map<String, String> JS2JAVA = new HashMap<>();
 	static {
 		JS2JAVA.put("YYYY", "yyyy");
 		JS2JAVA.put("YY", "yy");
@@ -71,7 +71,7 @@ public class DateUtils {
 				return new SimpleDateFormat("yyMMdd").parse(source);
 			} else if (source.length() == 8) {
 				return new SimpleDateFormat("yyyyMMdd").parse(source);
-			} else if (source.length() == 8) {
+			} else if (source.length() == 10) {
 				return new SimpleDateFormat("yyyy-MM-dd").parse(source);
 			} else if (source.length() == 19) {
 				return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(source);
