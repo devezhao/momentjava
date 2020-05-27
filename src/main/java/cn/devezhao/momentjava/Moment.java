@@ -35,7 +35,7 @@ public class Moment implements MomentBase<Moment>, MomentRelative<Moment>, Momen
      * @return
      */
 	public static Moment moment(String source) {
-		return new Moment(source);
+		return moment(source, null);
 	}
 	
 	/**
@@ -48,6 +48,8 @@ public class Moment implements MomentBase<Moment>, MomentRelative<Moment>, Momen
 	}
 	
 	/**
+     * Sets default
+     *
 	 * @param locale
 	 * @param format
 	 */
@@ -59,19 +61,15 @@ public class Moment implements MomentBase<Moment>, MomentRelative<Moment>, Momen
 
 	private MomentDelegate delegate;
 
-	public Moment() {
+    protected Moment() {
 		this.delegate = new MomentDelegate();
 	}
 
-	public Moment(Date date) {
+	protected Moment(Date date) {
 		this.delegate = new MomentDelegate(date);
 	}
 
-	public Moment(String source) {
-		this.delegate = new MomentDelegate(source);
-	}
-
-	public Moment(String source, String pattern) {
+    protected Moment(String source, String pattern) {
 		this.delegate = new MomentDelegate(source, pattern);
 	}
 

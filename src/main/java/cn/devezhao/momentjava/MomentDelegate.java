@@ -74,6 +74,11 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 		UNIT2INT_MAP.put(UNIT_SECOND_SHORT, 6);
 		UNIT2INT_MAP.put(UNIT_MILLISECOND, 7);
 		UNIT2INT_MAP.put(UNIT_MILLISECOND_SHORT, 7);
+
+        UNIT2INT_MAP.put(UNIT_QUARTER, 2);
+        UNIT2INT_MAP.put(UNIT_QUARTER_SHORT, 2);
+        UNIT2INT_MAP.put(UNIT_WEEK, 3);
+        UNIT2INT_MAP.put(UNIT_WEEK_SHORT, 3);
 	}
 
 	@Override
@@ -81,23 +86,55 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 		if (!UNIT2INT_MAP.containsKey(unit)) {
 			throw new IllegalArgumentException("无效的时间单位: " + unit);
 		}
-		int unitInt = UNIT2INT_MAP.get(unit);
-		this.dateRaw.set(Calendar.MILLISECOND, 0);
-		if (unitInt < 6) {
+
+		// ms
+        this.dateRaw.set(Calendar.MILLISECOND, 0);
+
+        final int month = this.dateRaw.get(Calendar.MONTH);
+        final int week = this.dateRaw.get(Calendar.DAY_OF_WEEK);
+        final int unit2Int = UNIT2INT_MAP.get(unit);
+
+		if (unit2Int < 6) {
 			this.dateRaw.set(Calendar.SECOND, 0);
 		}
-		if (unitInt < 5) {
+		if (unit2Int < 5) {
 			this.dateRaw.set(Calendar.MINUTE, 0);
 		}
-		if (unitInt < 4) {
+		if (unit2Int < 4) {
 			this.dateRaw.set(Calendar.HOUR_OF_DAY, 0);
 		}
-		if (unitInt < 3) {
+		if (unit2Int < 3) {
 			this.dateRaw.set(Calendar.DAY_OF_MONTH, 1);
 		}
-		if (unitInt < 2) {
+		if (unit2Int < 2) {
 			this.dateRaw.set(Calendar.MONTH, 0);
 		}
+
+		switch (unit) {
+            case UNIT_QUARTER:
+            case UNIT_QUARTER_SHORT: {
+                if (month < 3) {
+                    this.dateRaw.set(Calendar.MONTH, 0);
+                } else if (month < 6) {
+                    this.dateRaw.set(Calendar.MONTH, 3);
+                } else if (month < 9) {
+                    this.dateRaw.set(Calendar.MONTH, 6);
+                } else {
+                    this.dateRaw.set(Calendar.MONTH, 9);
+                }
+                break;
+            }
+            case UNIT_WEEK:
+            case UNIT_WEEK_SHORT: {
+                this.dateRaw.set(Calendar.DAY_OF_WEEK, 1);  // 周日
+                this.dateRaw.add(Calendar.DAY_OF_MONTH, 1);
+                if (week == 1) {
+                    this.dateRaw.add(Calendar.DAY_OF_YEAR, -7);
+                }
+                break;
+            }
+        }
+
 		return this;
 	}
 
@@ -106,25 +143,57 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 		if (!UNIT2INT_MAP.containsKey(unit)) {
 			throw new IllegalArgumentException("无效的时间单位: " + unit);
 		}
-		int unitInt = UNIT2INT_MAP.get(unit);
-		this.dateRaw.set(Calendar.MILLISECOND, 999);
-		if (unitInt < 6) {
+
+		// ms
+        this.dateRaw.set(Calendar.MILLISECOND, 999);
+
+        final int month = this.dateRaw.get(Calendar.MONTH);
+        final int week = this.dateRaw.get(Calendar.DAY_OF_WEEK);
+        final int unit2Int = UNIT2INT_MAP.get(unit);
+
+		if (unit2Int < 6) {
 			this.dateRaw.set(Calendar.SECOND, 59);
 		}
-		if (unitInt < 5) {
+		if (unit2Int < 5) {
 			this.dateRaw.set(Calendar.MINUTE, 59);
 		}
-		if (unitInt < 4) {
+		if (unit2Int < 4) {
 			this.dateRaw.set(Calendar.HOUR_OF_DAY, 23);
 		}
-		if (unitInt < 3) {
+		if (unit2Int < 3) {
 			this.dateRaw.set(Calendar.DAY_OF_MONTH, 1);
 			this.dateRaw.add(Calendar.MONTH, 1);
 			this.dateRaw.add(Calendar.DAY_OF_MONTH, -1);
 		}
-		if (unitInt < 2) {
+		if (unit2Int < 2) {
 			this.dateRaw.set(Calendar.MONTH, 11);
 		}
+
+        switch (unit) {
+            case UNIT_QUARTER:
+            case UNIT_QUARTER_SHORT: {
+                if (month < 3) {
+                    this.dateRaw.set(Calendar.MONTH, 2);
+                } else if (month < 6) {
+                    this.dateRaw.set(Calendar.MONTH, 5);
+                } else if (month < 9) {
+                    this.dateRaw.set(Calendar.MONTH, 8);
+                } else {
+                    this.dateRaw.set(Calendar.MONTH, 11);
+                }
+                this.dateRaw.add(Calendar.DAY_OF_MONTH, -1);
+                break;
+            }
+            case UNIT_WEEK:
+            case UNIT_WEEK_SHORT: {
+                if (week != 1) {
+                    this.dateRaw.set(Calendar.DAY_OF_WEEK, 0);  // 周六
+                    this.dateRaw.add(Calendar.DAY_OF_MONTH, 1);
+                }
+                break;
+            }
+        }
+
 		return this;
 	}
 
@@ -229,9 +298,17 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
             case UNIT_YEAR_SHORT:
                 this.dateRaw.add(Calendar.YEAR, amount);
                 break;
+            case UNIT_QUARTER:
+            case UNIT_QUARTER_SHORT:
+                this.dateRaw.add(Calendar.MONTH, amount * 3);
+                break;
             case UNIT_MONTH:
             case UNIT_MONTH_SHORT:
                 this.dateRaw.add(Calendar.MONTH, amount);
+                break;
+            case UNIT_WEEK:
+            case UNIT_WEEK_SHORT:
+                this.dateRaw.add(Calendar.DAY_OF_WEEK, amount * 7);
                 break;
             case UNIT_DAY:
             case UNIT_DAY_SHORT:
@@ -271,7 +348,7 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 			return I18nUtils.string(this.locale(), "Calendar.yesterday") + time;
 		}
 		
-		// TODO 优化周X显示
+//		// TODO 优化周X显示
 //		if (Math.abs(dayLeft) <= 6) {
 //			int wd = this.dateRaw.get(Calendar.DAY_OF_WEEK) - 1;
 //			if (wd < 0) {

@@ -11,26 +11,21 @@ public class MomentCalendarTest {
 
 	@Test
 	public void testSubtract() {
-		System.out.println(Moment.moment().subtract(1, "M").format());
-		System.out.println(Moment.moment().subtract(1, "y").format());
+		System.out.println(Moment.moment().subtract(1, Moment.UNIT_MONTH).format());
+		System.out.println(Moment.moment().subtract(1, Moment.UNIT_YEAR).format());
 	}
 	
 	@Test
 	public void testAdd() {
-		System.out.println(Moment.moment().add(1, "M").format());
-		System.out.println(Moment.moment().add(1, "h").format());
+		System.out.println(Moment.moment().add(1, Moment.UNIT_MONTH).format());
+		System.out.println(Moment.moment().add(1, Moment.UNIT_HOUR).format());
 	}
 	
 	@Test
 	public void testCalendar() {
-		for (int i = 0; i < 10; i++) {
-			System.out.println(Moment.moment().subtract(i, "d").calendar());
-		}
-		
 		System.out.println("--");
-		
-		for (int i = 0; i < 10; i++) {
-			System.out.println(Moment.moment().add(i, "d").calendar());
+		for (int i = -1; i < 10; i++) {
+			System.out.println(Moment.moment().add(i, Moment.UNIT_DAY).calendar());
 		}
 	}
 }
