@@ -15,7 +15,7 @@ import cn.devezhao.momentjava.util.DateUtils;
 public class DateUtilsTest {
 
 	@Test
-	public void testSubtract() throws Exception {
+	public void testSubtract() {
 		Date subtrahend = DateUtils.parse("2017-09-01");
 		Date minuend = DateUtils.parse("2015-11-01");
 		

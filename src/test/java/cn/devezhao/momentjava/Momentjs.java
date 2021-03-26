@@ -2,6 +2,7 @@ package cn.devezhao.momentjava;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.Objects;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -20,7 +21,8 @@ public class Momentjs {
 	public Momentjs() {
 		scriptEngineManager = new ScriptEngineManager();
 		scriptEngine = scriptEngineManager.getEngineByName("javascript");
-		File momentjs = new File(Momentjs.class.getClassLoader().getResource("js/momentjs-2.10.2.js").getFile());
+		File momentjs = new File(Objects.requireNonNull(
+				Momentjs.class.getClassLoader().getResource("js/momentjs-2.10.2.js")).getFile());
 		try {
 			scriptEngine.eval(new FileReader(momentjs));
 		} catch (Exception e) {

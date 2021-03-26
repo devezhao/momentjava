@@ -84,7 +84,7 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 	@Override
     public MomentDelegate startOf(String unit) {
 		if (!UNIT2INT_MAP.containsKey(unit)) {
-			throw new IllegalArgumentException("无效的时间单位: " + unit);
+			throw new IllegalArgumentException("Invalid time unit : " + unit);
 		}
 
 		// ms
@@ -141,7 +141,7 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
 	@Override
     public MomentDelegate endOf(String unit) {
 		if (!UNIT2INT_MAP.containsKey(unit)) {
-			throw new IllegalArgumentException("无效的时间单位: " + unit);
+			throw new IllegalArgumentException("Invalid time unit : " + unit);
 		}
 
 		// ms
@@ -181,7 +181,11 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
                 } else {
                     this.dateRaw.set(Calendar.MONTH, 11);
                 }
-                this.dateRaw.add(Calendar.DAY_OF_MONTH, -1);
+
+                // 差一天???
+                if (this.dateRaw.get(Calendar.DAY_OF_MONTH) == 1) {
+					this.dateRaw.add(Calendar.DAY_OF_MONTH, -1);
+				}
                 break;
             }
             case UNIT_WEEK:
@@ -331,7 +335,7 @@ public class MomentDelegate implements MomentBase<MomentDelegate>, MomentRelativ
                 this.dateRaw.add(Calendar.MILLISECOND, amount);
                 break;
             default:
-                throw new IllegalArgumentException("无效的时间单位: " + unit);
+                throw new IllegalArgumentException("Invalid time unit : " + unit);
         }
 		return this;
 	}

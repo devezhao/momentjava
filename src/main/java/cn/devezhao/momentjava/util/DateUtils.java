@@ -1,6 +1,7 @@
 package cn.devezhao.momentjava.util;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -71,31 +72,6 @@ public class DateUtils {
 	 * @return
 	 */
 	public static int getDayLeft(Date begin, Date end) {
-//		begin = startTime(begin);
-//		end = startTime(end);
-//		int ct = begin.compareTo(end);
-//		if (ct == 0) {
-//			return 0;
-//		}
-//		
-//		if (ct < 0) {
-//			Calendar cal = calendar(begin);
-//			int days = -1;
-//			while (cal.getTime().compareTo(end) <= 0) {
-//				days++;
-//				cal.add(Calendar.DAY_OF_YEAR, 1);
-//			}
-//			return days;
-//		} else {
-//			Calendar cal = calendar(end);
-//			int days = -1;
-//			while (cal.getTime().compareTo(begin) <= 0) {
-//				days++;
-//				cal.add(Calendar.DAY_OF_YEAR, 1);
-//			}
-//			return -days;
-//		}
-		
 		return (int) subtract(end, begin, Calendar.DAY_OF_YEAR);
 	}
 	
@@ -212,7 +188,7 @@ public class DateUtils {
 	}
 	
 	private static long subtractFormat(BigDecimal x, long divisor) {
-		x = x.divide(BigDecimal.valueOf(divisor), 2, BigDecimal.ROUND_HALF_UP);
-		return x.setScale(0, BigDecimal.ROUND_UP).longValue();
+		x = x.divide(BigDecimal.valueOf(divisor), 2, RoundingMode.HALF_UP);
+		return x.setScale(0, RoundingMode.UP).longValue();
 	}
 }

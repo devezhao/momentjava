@@ -75,3 +75,4 @@ derby.log
 .classpath
 .project
 *.iml
+/.idea/

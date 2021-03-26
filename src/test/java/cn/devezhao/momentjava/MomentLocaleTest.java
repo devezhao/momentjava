@@ -14,7 +14,7 @@ import cn.devezhao.momentjava.util.MomentException;
 public class MomentLocaleTest {
 
 	@Test
-	public void testLocale() throws Exception {
+	public void testLocale() {
 		Moment moment = Moment.moment();
 		System.out.println(moment.locale());
 		moment.locale("en_US");
@@ -22,7 +22,7 @@ public class MomentLocaleTest {
 	}
 	
 	@Test
-	public void testI18n() throws Exception {
+	public void testI18n() {
 		System.out.println(I18nUtils.string("zh_CN", "Calendar.today"));
 		try {
 			System.out.println(I18nUtils.string("zh_HK", "Calendar.today"));
